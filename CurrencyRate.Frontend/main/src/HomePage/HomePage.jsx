@@ -35,7 +35,8 @@ class HomePage extends React.Component {
     getConvertedSums(date, sum)
     {
         rateService.convertSum(date, sum)
-            .then(result => this.setState({ convertedSumsResult: result }));
+            .then(result => this.setState({ convertedSumsResult: result }),
+                error => this.setState({ convertedSumsResult: { isSuccess: false, error: error} }));
     }
 
     render() {

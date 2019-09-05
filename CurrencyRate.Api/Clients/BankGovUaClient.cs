@@ -3,9 +3,7 @@ using CurrencyRate.Api.Serializers;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CurrencyRate.Api.Clients
@@ -32,16 +30,17 @@ namespace CurrencyRate.Api.Clients
                 };
             string uri = QueryHelpers.AddQueryString(_url, queryParameters);
 
-            HttpResponseMessage response = await _httpClient.GetAsync(uri);
-
-            if (response.IsSuccessStatusCode)
+            using (HttpResponseMessage response = await _httpClient.GetAsync(uri))
             {
-                string content = await response.Content.ReadAsStringAsync();
-                return _serializer.Deserialize<List<BankGovUaRateResponse>>(content);
-            }
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    return _serializer.Deserialize<List<BankGovUaRateResponse>>(content);
+                }
 
-            response.EnsureSuccessStatusCode();
-            return null;
+                response.EnsureSuccessStatusCode();
+                return null;
+            }
         }
     }
 }

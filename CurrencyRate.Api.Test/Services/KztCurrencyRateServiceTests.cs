@@ -35,6 +35,28 @@ namespace CurrencyRate.Api.Test
         }
 
         [Fact]
+        public void GetRate_NullResponse_ExceptionThrown()
+        {
+            var client = new Mock<INationalBankKzClient>();
+            NbRatesResponse response = null;
+            client.Setup(p => p.GetRates(It.IsAny<DateTime>())).ReturnsAsync(response);
+            KztCurrencyRateService service = new KztCurrencyRateService(client.Object);
+
+            Assert.ThrowsAsync<Exception>(() => service.GetRate(DateTime.Now));
+        }
+
+        [Fact]
+        public void GetRate_EmptyResponse_ExceptionThrown()
+        {
+            var client = new Mock<INationalBankKzClient>();
+            NbRatesResponse response = new NbRatesResponse();
+            client.Setup(p => p.GetRates(It.IsAny<DateTime>())).ReturnsAsync(response);
+            KztCurrencyRateService service = new KztCurrencyRateService(client.Object);
+
+            Assert.ThrowsAsync<Exception>(() => service.GetRate(DateTime.Now));
+        }
+
+        [Fact]
         public void ConvertSum_DateFromFuture_ExceptionThrown()
         {
             var client = new Mock<INationalBankKzClient>();

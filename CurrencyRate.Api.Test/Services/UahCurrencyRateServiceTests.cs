@@ -35,6 +35,28 @@ namespace CurrencyRate.Api.Test
         }
 
         [Fact]
+        public void GetRate_NullResponse_ExceptionThrown()
+        {
+            var client = new Mock<IBankGovUaClient>();
+            List<BankGovUaRateResponse> response = null;
+            client.Setup(p => p.Exchange(It.IsAny<DateTime>())).ReturnsAsync(response);
+            UahCurrencyRateService service = new UahCurrencyRateService(client.Object);
+
+            Assert.ThrowsAsync<Exception>(() => service.GetRate(DateTime.Now));
+        }
+
+        [Fact]
+        public void GetRate_EmptyResponse_ExceptionThrown()
+        {
+            var client = new Mock<IBankGovUaClient>();
+            List<BankGovUaRateResponse> response = new List<BankGovUaRateResponse>();
+            client.Setup(p => p.Exchange(It.IsAny<DateTime>())).ReturnsAsync(response);
+            UahCurrencyRateService service = new UahCurrencyRateService(client.Object);
+
+            Assert.ThrowsAsync<Exception>(() => service.GetRate(DateTime.Now));
+        }
+
+        [Fact]
         public void ConvertSum_DateFromFuture_ExceptionThrown()
         {
             var client = new Mock<IBankGovUaClient>();

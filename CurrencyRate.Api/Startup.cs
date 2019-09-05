@@ -21,6 +21,7 @@ using CurrencyRate.Api.Services;
 using CurrencyRate.Api.Clients;
 using CurrencyRate.Api.Serializers;
 using CurrencyRate.Api.AppSettingsModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CurrencyRate.Api
 {
@@ -43,7 +44,11 @@ namespace CurrencyRate.Api
         {
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            //services.AddHttpClient()
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            }
+            );
             services.AddTransient<ICurrencyRateService, KztCurrencyRateService>();
             services.AddTransient<ICurrencyRateService, UahCurrencyRateService>();
             services.AddHttpClient<IBankGovUaClient, BankGovUaClient>()
@@ -69,7 +74,7 @@ namespace CurrencyRate.Api
 
             services.Configure<List<Currency>>(Configuration.GetSection("Currencies"));
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettingsSection = Configuration.GetSection("Authentication");
             services.Configure<Authentication>(appSettingsSection);
 
             // configure jwt authentication

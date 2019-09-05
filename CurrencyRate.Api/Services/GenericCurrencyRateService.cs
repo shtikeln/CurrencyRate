@@ -17,15 +17,14 @@ namespace CurrencyRate.Api.Services
 
         public virtual async Task<decimal> GetRate(DateTime date)
         {
-            throw new NotImplementedException("Method 'GetRate' should be implemented in inheritied classes.");
-            //return await Task.Run(() => { return 0.0M; }); 
+            throw new NotImplementedException("Метод 'GetRate' должен быть реализован в наследуемом классе.");
         }
 
         protected bool ValidateDate(DateTime date)
         {
             if (date > DateTime.Now)
             {
-                throw new ArgumentOutOfRangeException(nameof(date), $"Parameter '{nameof(date)}' cannot be from the future. Parameter value: '{date}'");
+                throw new ArgumentOutOfRangeException(nameof(date), $"Параметр '{nameof(date)}' не должен быть больше текущей даты. Значение параметра: '{date}'");
             }
             return true;
         }
@@ -34,7 +33,7 @@ namespace CurrencyRate.Api.Services
         {
             if (sum <= 0)
             {
-                throw new ArgumentException($"Parameter '{nameof(sum)}' should be greater than zero. Parameter value: '{sum}'", nameof(sum));
+                throw new ArgumentException($"Параметр '{nameof(sum)}' должен быть больше нуля. Значение параметра: '{sum}'", nameof(sum));
             }
             return true;
         }

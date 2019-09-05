@@ -21,7 +21,11 @@ namespace CurrencyRate.Api.Services
         {
             ValidateDate(date);
             List<BankGovUaRateResponse> response = await _client.Exchange(date);
-            BankGovUaRateResponse item = response.First(x => x.Cc == "RUB");
+            if (response == null)
+                throw new Exception("Нет данных на указанную дату");
+            BankGovUaRateResponse item = response.FirstOrDefault(x => x.Cc == "RUB");
+            if (item == null)
+                throw new Exception("Нет курса на указанную дату");
             return item.Rate;
         }
     }

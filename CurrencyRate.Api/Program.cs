@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
@@ -20,6 +21,7 @@ namespace CurrencyRate.Api
             try
             {
                 logger.Debug("init main");
+
                 BuildWebHost(args).Run();
             }
             catch (Exception ex)

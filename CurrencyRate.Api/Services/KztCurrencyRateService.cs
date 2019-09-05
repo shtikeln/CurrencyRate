@@ -19,7 +19,11 @@ namespace CurrencyRate.Api.Services
         {
             ValidateDate(date);
             NbRatesResponse response = await _client.GetRates(date);
-            NbItemResponse nbItem = response.Items.First(x => x.Title == "RUB");
+            if (response == null)
+                throw new Exception("Нет данных на указанную дату");
+            NbItemResponse nbItem = response.Items.FirstOrDefault(x => x.Title == "RUB");
+            if (nbItem == null)
+                throw new Exception("Нет курса на указанную дату");
             return nbItem.Description / nbItem.Quant;
         }
     }

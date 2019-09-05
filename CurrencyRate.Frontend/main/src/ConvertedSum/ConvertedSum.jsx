@@ -19,7 +19,7 @@ class ConvertedSum extends React.Component {
             {isSuccess ?
                 (<div className= "alert alert-primary">{currencyTitle}: {this.formatMoney(sum, currencyCode)}</div>)
             :
-                (<div className= "alert alert-danger">{error}</div>)
+                (<div className= "alert alert-danger">{currencyTitle}: {error}</div>)
             }
             </div>
         );

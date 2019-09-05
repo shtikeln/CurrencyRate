@@ -19,13 +19,13 @@ namespace CurrencyRate.Api
     [ApiController]
     public class ExchangeController : ControllerBase
     {
-        private readonly IOptions<List<Currency>> _currencies;
+        private readonly List<Currency> _currencies;
         private readonly Dictionary<string, ICurrencyRateService> _currencyServices;
         private readonly ILogger<ExchangeController> _logger;
 
         public ExchangeController(IOptions<List<Currency>> currencies, Dictionary<string, ICurrencyRateService> currencyServices, ILogger<ExchangeController> logger)
         {
-            _currencies = currencies;
+            _currencies = currencies.Value;
             _currencyServices = currencyServices;
             _logger = logger;
         }
@@ -38,12 +38,12 @@ namespace CurrencyRate.Api
             {
                 if (!DateTime.TryParseExact(date, "dd.MM.yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dateValue))
                 {
-                    throw new ArgumentException($"Parameter '{nameof(date)}' is not a date. Parameter value: '{date}'", nameof(date));
+                    throw new ArgumentException($"Параметр '{nameof(date)}' не содержит дату. Значение параметра: '{date}'", nameof(date));
                 }
 
                 List<ExchangeDto> result = new List<ExchangeDto>();
 
-                foreach (var currency in _currencies.Value)
+                foreach (var currency in _currencies)
                 {
                     ExchangeDto exchangeDto = new ExchangeDto()
                     {

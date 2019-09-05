@@ -21,7 +21,7 @@ namespace CurrencyRate.Api.Responses
         [XmlElement("date")]
         public string Date { get; set; }
         [XmlElement("item")]
-        public List<NbItemResponse> Items { get; set; }
+        public List<NbItemResponse> Items { get; set; } = new List<NbItemResponse>();
         [XmlElement("info")]
         public string Info { get; set; }
     }

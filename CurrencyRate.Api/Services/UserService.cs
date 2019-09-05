@@ -13,28 +13,22 @@ namespace CurrencyRate.Api.Services
 {
     public class UserService : IUserService
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<User> _users = new List<User>
-        {
-            new User { Id = 1, Username = "test", Password = "test" }
-        };
-
         private readonly Authentication _appSettings;
+        private readonly DataContext _context;
 
-        public UserService(IOptions<Authentication> appSettings)
+        public UserService(IOptions<Authentication> appSettings, DataContext context)
         {
             _appSettings = appSettings.Value;
+            _context = context;
         }
 
         public User Authenticate(string username, string password)
         {
-            var user = _users.SingleOrDefault(x => x.Username == username && x.Password == password);
-
-            // return null if user not found
+            var user = _context.Users.SingleOrDefault(x => x.Username == username && x.Password == password);
+            
             if (user == null)
                 return null;
-
-            // authentication successful so generate jwt token
+            
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -48,8 +42,7 @@ namespace CurrencyRate.Api.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-
-            // remove password before returning
+            
             user.Password = null;
 
             return user;

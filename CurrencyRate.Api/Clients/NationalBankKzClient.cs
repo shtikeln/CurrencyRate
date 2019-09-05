@@ -33,16 +33,17 @@ namespace CurrencyRate.Api.Clients
 
             string uri = QueryHelpers.AddQueryString(_url, queryParameters);
 
-            HttpResponseMessage response = await _httpClient.GetAsync(uri);
-            
-            if (response.IsSuccessStatusCode)
+            using (HttpResponseMessage response = await _httpClient.GetAsync(uri))
             {
-                string content = await response.Content.ReadAsStringAsync();
-                return _serializer.Deserialize<NbRatesResponse>(content);
-            }
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    return _serializer.Deserialize<NbRatesResponse>(content);
+                }
 
-            response.EnsureSuccessStatusCode();
-            return null;
+                response.EnsureSuccessStatusCode();
+                return null;
+            }
         }
     }
 }
