@@ -1,0 +1,7 @@
+2019-09-05 18:20:14.8812 Info Message Template Auto Format enabled
+2019-09-05 18:20:14.9119 Info Loading assembly: NLog.Web.AspNetCore
+2019-09-05 18:20:15.0640 Info Adding target FileTarget(Name=allfile)
+2019-09-05 18:20:15.1174 Info Adding target FileTarget(Name=ownFile-web)
+2019-09-05 18:20:15.1264 Info Adding target ConsoleTarget(Name=logconsole)
+2019-09-05 18:20:15.1370 Info Adding target DatabaseTarget(Name=databaselog)
+2019-09-05 18:20:15.2155 Info Found 90 configuration items
