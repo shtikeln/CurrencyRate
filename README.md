@@ -1,0 +1,2 @@
+# CurrencyRate
+Test project
